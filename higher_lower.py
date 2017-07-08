@@ -24,15 +24,21 @@ secret = None
 def difficulty_level_easy():
     secret = float(random.randrange(0,100))
     while game_on:
-        guess = int(raw_input('Guess a number. '))
 
-        if guess > secret:
-            print('your guess is too high. Try again.')
-        elif guess < secret:
-            print('your guess is too low. Try again.')
-        elif guess == secret:
-            printGreen('You win!')
-            play_again()
+        try:
+            guess = int(raw_input('Guess a number. '))
+            
+            if guess > secret:
+                print('your guess is too high. Try again.')
+            elif guess < secret:
+                print('your guess is too low. Try again.')
+            elif guess == secret:
+                printGreen('You win!')
+                play_again()
+        except:
+            printYellow('Encountered some exception.  Will try again.')
+            start_game()
+
             
 # function for hard version
 def difficulty_level_hard():
@@ -40,29 +46,40 @@ def difficulty_level_hard():
     global guesses
     guesses = 3
     for i in range(guesses):
-        guess = float(raw_input('Guess a number. '))
-        if i == 2:
-            printRed('Game over. Too many guesses.')
-            play_again()
-        elif guess > secret:
-            print('your guess is too high. Try again.')
-        elif guess < secret:
-            print('your guess is too low. Try again.')
-        elif guess == secret:
-            printGreen('You win!')
-            play_again()
+        try:
+            guess = float(raw_input('Guess a number. '))
+            if i == 2:
+                printRed('Game over. Too many guesses.')
+                play_again()
+            elif guess > secret:
+                print('your guess is too high. Try again.')
+            elif guess < secret:
+                print('your guess is too low. Try again.')
+            elif guess == secret:
+                printGreen('You win!')
+                play_again()
+        except:
+            printYellow('Encountered some exception.  Will try again.')
+            start_game()
+
             
 # function to start game
 def start_game():
     global game_on
     game_on = True
-    level = raw_input('Welcome. Type easy, hard, or quit. ')
-    if level == 'easy':
-        difficulty_level_easy()
-    elif level == 'hard':
-        difficulty_level_hard()
-    elif level == 'quit':
-        game_on = False      
+    try:
+        level = raw_input('Welcome. Type easy, hard, or quit. ')
+        if level == 'easy':
+            difficulty_level_easy()
+        elif level == 'hard':
+            difficulty_level_hard()
+        elif level == 'quit':
+            game_on = False
+        else:
+            game_on = False
+    except:
+        printYellow('Encountered some exception.  Will try again.')
+        start_game()
         
 # function to stop game
 def stop_game():
@@ -73,12 +90,15 @@ def stop_game():
 def play_again():
     global game_on
     game_on = True
-    play = raw_input('Play again? Yes or No. ')
-    if play == 'Yes':
+    try:
+        play = raw_input('Play again? Yes or No. ')
+        if play == 'Yes':
+            start_game()
+        else:
+            game_On = 'false'
+    except:
+        printYellow('Encountered some exception.  Will try again.')
         start_game()
-    else:
-        game_On = 'false'
-
 
 def printBlue(msg):
     print(Fore.BLUE + msg)
@@ -92,4 +112,12 @@ def printGreen(msg):
     print(Fore.GREEN + msg)
     print(Fore.RESET)
 
+def printYellow(msg):
+    print(Fore.YELLOW + msg)
+    print(Fore.RESET)
+
+
 start_game()
+
+
+    
