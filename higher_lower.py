@@ -20,13 +20,17 @@ game_on = None
 guesses = None
 secret = None
 
+min_value = 0
+max_value = 10
+
 # function for easy version
 def difficulty_level_easy():
-    secret = float(random.randrange(0,100))
+    secret = float(random.randrange(min_value, max_value))
     while game_on:
 
         try:
-            guess = int(raw_input('Guess a number. '))
+            printBlue('Guess a number between %d and %d. ' % (min_value, max_value))
+            guess = int(raw_input(''))
             
             if guess > secret:
                 print('your guess is too high. Try again.')
@@ -47,7 +51,10 @@ def difficulty_level_hard():
     guesses = 3
     for i in range(guesses):
         try:
-            guess = float(raw_input('Guess a number. '))
+
+            printBlue('Guess a number between %d and %d. ' % (min_value, max_value))
+            guess = float(raw_input(''))
+
             if i == 2:
                 printRed('Game over. Too many guesses.')
                 play_again()
@@ -68,7 +75,9 @@ def start_game():
     global game_on
     game_on = True
     try:
-        level = raw_input('Welcome. Type easy, hard, or quit. ')
+        printBlue('Welcome. Type easy, hard, or quit. ')
+        level = raw_input('')
+
         if level == 'easy':
             difficulty_level_easy()
         elif level == 'hard':
