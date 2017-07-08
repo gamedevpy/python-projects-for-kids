@@ -13,6 +13,7 @@
 
 # imported libraries go here
 import random
+from colorama import Fore, Back, Style
 
 # global variables go here
 game_on = None
@@ -30,7 +31,7 @@ def difficulty_level_easy():
         elif guess < secret:
             print('your guess is too low. Try again.')
         elif guess == secret:
-            print('You win!')
+            printGreen('You win!')
             play_again()
             
 # function for hard version
@@ -41,14 +42,14 @@ def difficulty_level_hard():
     for i in range(guesses):
         guess = float(raw_input('Guess a number. '))
         if i == 2:
-            print('Game over. Too many guesses.')
+            printRed('Game over. Too many guesses.')
             play_again()
         elif guess > secret:
             print('your guess is too high. Try again.')
         elif guess < secret:
             print('your guess is too low. Try again.')
         elif guess == secret:
-            print('You win!')
+            printGreen('You win!')
             play_again()
             
 # function to start game
@@ -77,5 +78,18 @@ def play_again():
         start_game()
     else:
         game_On = 'false'
+
+
+def printBlue(msg):
+    print(Fore.BLUE + msg)
+    print(Fore.RESET)
+
+def printRed(msg):
+    print(Fore.RED + msg)
+    print(Fore.RESET)
+
+def printGreen(msg):
+    print(Fore.GREEN + msg)
+    print(Fore.RESET)
 
 start_game()
