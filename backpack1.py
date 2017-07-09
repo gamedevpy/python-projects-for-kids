@@ -9,52 +9,174 @@
 ## Python Projects for Kids
 ## Chapter 7 - What's in your backpack?
 ##
+## Did not follow the recipe in the book chapter- merely
+## implemented myself based on the specifications outlined
+## in the book chapter.
+##
 ##------------------------------------------------------
 
 # imported libraries go here
 import os
+import collections
 import random
 from colorama import Fore, Back, Style
 
 # global variables go here
 game_on = None
 
-players_lookup = {}
+players_list
 
-players_count = 0
+players_count
 
 def initialize_game():
 
     global player_count
+    global player_list
+
+
+    player_count = 0
+    player_list  = []
 
     for i in range(player_count):
 
         os.system('cls' if os.name == 'nt' else 'clear')
+
         num = i + 1
+        
         player_name = raw_input('Enter name for player %d : ' % num)
+        
         new_player_lookup = {}
+        
         new_player_lookup['name'] = player_name
+        
         new_player_lookup['score'] = 0
+        
         new_player_lookup['items_list'] = {}
 
         print("Now add your personal items")
+
         for j in range(4):
+        
             item_num = j + 1
-            item = raw_input('Enter name of item %d : ' % item_num)
-            new_player_lookup['items_list'][item] = 'personal'
+            
+            while True:
+
+                item = raw_input('Enter name of item %d : ' % item_num)
+                
+                if item in new_player_lookup['items_list'].keys():
+                    
+                    print("You already have that item in your backpack, please try something else.")                    
+                else:
+                    
+                    new_player_lookup['items_list'][item] = 'personal'
+                    
+                    break
 
 
         print("Now add some exta items")
+        
         for k in range(4):
+            
             item_num = k + 1
-            item = raw_input('Enter name of item %d : ' % item_num)
-            new_player_lookup['items_list'][item] = 'extra'
+
+            while True:
+        
+                item = raw_input('Enter name of item %d : ' % item_num)
+        
+                if item in new_player_lookup['items_list'].keys():
+        
+                    print("You already have that item in your backpack, please try something else.")                    
+        
+                else:
+        
+                    new_player_lookup['items_list'][item] = 'extra'
+        
+                    break
             
         printGreen('Backpack is ready for %s' % player_name)
 
+        players_list.append(new_player_lookup)
+
 
 def begin_challenge():
-    pass
+
+    os.system('cls' if os.name == 'nt' else 'clear')    
+    print("Let the challenge begin!")
+
+    play_on = True
+
+    current_player_num = 0
+
+    other_player_num = 1
+    
+    while (play_on):
+
+        current_player = players_list[current_player_num]
+        current_player_name = current_player['name']
+
+        other_player = players_list[other_player_num]
+        other_player_name = other_player['name']
+
+        print("%s, it is your turn to guess what personal items are in %s's backpack " % (current_player_name, other_player_name))
+        
+
+        other_player_item_dict = other_player['items_list']
+        
+        display_backpack_items(other_player_item_dict)
+        
+        guess = raw_input("What's your guess? ")
+        
+        good_guess = False
+        # if guess in other_player_item_dict.keys():
+        for key in other_player_item_dict:
+                
+            if key == guess:
+
+                good_guess = True
+
+                val = other_player_item_dict[key]
+
+                if val == 'personal':
+
+                    printGreen("Correct!")
+
+                    current_player['score'] = current_player['score'] + 1
+        
+                    if current_player['score'] == 4:
+        
+                        printGreen("%s has one the game!!!" % current_player_name)
+                        start_game()
+    
+                else:
+                    printYellow("That is not one of the personal items")
+    
+
+                del other_player_item_dict[guess]
+    
+    
+                break
+            
+        if not good_guess:
+            printRed("Umm, that is not one of the items in the backpack")
+
+        if current_player_num == 1:
+            current_player_num = 0
+            other_player_num = 1
+        else:
+            current_player_num = 1
+            other_player_num = 0                        
+
+
+def display_backpack_items(items_dict):
+
+    printBlue("\nHere are the contents of the backpack:")
+    
+    od = collections.OrderedDict(sorted(items_dict.items()))
+    
+    for item in od:
+    
+        print(item)
+
 
 # function to start game
 def start_game():
@@ -66,7 +188,7 @@ def start_game():
     game_on = True
 
     try:
-        printBlue('Welcome. How many players?. ')
+        printBlue('Welcome. How many players?. (0 to quit) ')
         player_count = int(raw_input(''))
 
         if player_count > 1:
