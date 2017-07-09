@@ -24,18 +24,85 @@ from colorama import Fore, Back, Style
 # global variables go here
 game_on = None
 
-players_list
+players_list = []
 
-players_count
+player_count = 0
+
+
+def reset_game():
+
+
+    global players_list
+    
+    global player_count
+
+    players_list = []
+    
+    player_count = 0
+
+
+def add_personal_items(new_player_lookup):
+
+    print("Now add your personal items")
+
+    for j in range(4):
+    
+        item_num = j + 1
+        
+        while True:
+
+            item = raw_input('Enter name of item %d : ' % item_num)
+
+            if len(item) > 0:
+
+                if item in new_player_lookup['items_list'].keys():
+                    
+                    print("You already have that item in your backpack, please try something else.")                    
+                else:
+                    
+                    new_player_lookup['items_list'][item] = 'personal'
+                    
+                    break
+            else:
+                print("You need to enter something.  Please try again.")
+
+
+def add_extra_items(new_player_lookup):
+    
+    print("Now add some exta items")
+    
+    for k in range(4):
+        
+        item_num = k + 1
+
+        while True:
+    
+            item = raw_input('Enter name of item %d : ' % item_num)
+
+            if len(item) > 0:        
+                if item in new_player_lookup['items_list'].keys():
+        
+                    print("You already have that item in your backpack, please try something else.")                    
+        
+                else:
+        
+                    new_player_lookup['items_list'][item] = 'extra'
+        
+                    break
+
+            else:
+                print("You need to enter something.  Please try again.")
+
+
 
 def initialize_game():
 
     global player_count
-    global player_list
+
+    global players_list
 
 
-    player_count = 0
-    player_list  = []
+    players_list  = []
 
     for i in range(player_count):
 
@@ -53,46 +120,10 @@ def initialize_game():
         
         new_player_lookup['items_list'] = {}
 
-        print("Now add your personal items")
+        add_personal_items(new_player_lookup)
 
-        for j in range(4):
-        
-            item_num = j + 1
-            
-            while True:
-
-                item = raw_input('Enter name of item %d : ' % item_num)
-                
-                if item in new_player_lookup['items_list'].keys():
-                    
-                    print("You already have that item in your backpack, please try something else.")                    
-                else:
-                    
-                    new_player_lookup['items_list'][item] = 'personal'
-                    
-                    break
-
-
-        print("Now add some exta items")
-        
-        for k in range(4):
-            
-            item_num = k + 1
-
-            while True:
-        
-                item = raw_input('Enter name of item %d : ' % item_num)
-        
-                if item in new_player_lookup['items_list'].keys():
-        
-                    print("You already have that item in your backpack, please try something else.")                    
-        
-                else:
-        
-                    new_player_lookup['items_list'][item] = 'extra'
-        
-                    break
-            
+        add_extra_items(new_player_lookup)
+           
         printGreen('Backpack is ready for %s' % player_name)
 
         players_list.append(new_player_lookup)
@@ -124,38 +155,44 @@ def begin_challenge():
         
         display_backpack_items(other_player_item_dict)
         
-        guess = raw_input("What's your guess? ")
-        
         good_guess = False
-        # if guess in other_player_item_dict.keys():
-        for key in other_player_item_dict:
-                
-            if key == guess:
 
-                good_guess = True
+        guess = raw_input("What's your guess? ")
 
-                val = other_player_item_dict[key]
-
-                if val == 'personal':
-
-                    printGreen("Correct!")
-
-                    current_player['score'] = current_player['score'] + 1
-        
-                    if current_player['score'] == 4:
-        
-                        printGreen("%s has one the game!!!" % current_player_name)
-                        start_game()
-    
-                else:
-                    printYellow("That is not one of the personal items")
-    
-
-                del other_player_item_dict[guess]
-    
-    
-                break
+        if len(guess) > 0:
             
+            # if guess in other_player_item_dict.keys():
+            for key in other_player_item_dict:
+                    
+                if key == guess:
+
+                    good_guess = True
+
+                    val = other_player_item_dict[key]
+
+                    if val == 'personal':
+
+                        printGreen("Correct!")
+
+                        current_player['score'] = current_player['score'] + 1
+            
+                        if current_player['score'] == 4:
+            
+                            printGreen("%s has one the game!!!" % current_player_name)
+                            start_game()
+        
+                    else:
+                        printYellow("That is not one of the personal items")
+        
+
+                    del other_player_item_dict[guess]
+        
+        
+                    break
+        else:
+            print("You need to type something.  Please try again.")            
+            next
+
         if not good_guess:
             printRed("Umm, that is not one of the items in the backpack")
 
@@ -186,6 +223,8 @@ def start_game():
     global player_count
 
     game_on = True
+
+    reset_game()
 
     try:
         printBlue('Welcome. How many players?. (0 to quit) ')
