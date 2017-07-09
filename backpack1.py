@@ -12,6 +12,7 @@
 ##------------------------------------------------------
 
 # imported libraries go here
+import os
 import random
 from colorama import Fore, Back, Style
 
@@ -27,17 +28,28 @@ def initialize_game():
     global player_count
 
     for i in range(player_count):
+
+        os.system('cls' if os.name == 'nt' else 'clear')
         num = i + 1
         player_name = raw_input('Enter name for player %d : ' % num)
         new_player_lookup = {}
         new_player_lookup['name'] = player_name
         new_player_lookup['score'] = 0
-        new_player_lookup['items_list'] = []
+        new_player_lookup['items_list'] = {}
+
+        print("Now add your personal items")
         for j in range(4):
             item_num = j + 1
             item = raw_input('Enter name of item %d : ' % item_num)
-            new_player_lookup['items_list'].append(item)
+            new_player_lookup['items_list'][item] = 'personal'
 
+
+        print("Now add some exta items")
+        for k in range(4):
+            item_num = k + 1
+            item = raw_input('Enter name of item %d : ' % item_num)
+            new_player_lookup['items_list'][item] = 'extra'
+            
         printGreen('Backpack is ready for %s' % player_name)
 
 
