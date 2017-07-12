@@ -37,6 +37,7 @@ white = color_helper.getWhite()
 red = color_helper.getRed()
 yellow = color_helper.getYellow()
 
+BALL_RADIUS = 10
 BALL_VELOCITY = 5
 BALL_COLOR = white
 COURT_COLOR = color_helper.getGreen()
@@ -59,7 +60,7 @@ pygame.display.set_caption("Tiny Tennis")
 font = pygame.font.SysFont("monospace", 75)
 
 
-ball = Ball(int(screen_width / 2), int(screen_height / 2), BALL_VELOCITY, BALL_VELOCITY, 20)
+ball = Ball(int(screen_width / 2), int(screen_height / 2), BALL_VELOCITY, BALL_VELOCITY, BALL_RADIUS)
 
 ball.setScreenHeight(screen_height)
 
