@@ -41,6 +41,12 @@ class Ball():
 	def getRadius(self):
 		return self.radius
 		
+	def setId(self, id):
+		self.id = id
+
+	def getId(self):
+		return self.id
+
 	def updatePosition(self):
 		self.x_pos += self.x_vel
 		self.y_pos += self.y_vel
